@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#101a20" />
+  <title>Crônicas de Eldoria — A Última Chama</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='.9em' font-size='56'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&family=Marcellus&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Crônicas de Eldoria">
+        <span class="brand-mark">✦</span><span class="brand-copy"><strong>ELDORIA</strong><small>CRÔNICAS DA ÚLTIMA CHAMA</small></span>
+      </a>
+      <div class="chapter"><span class="chapter-dot"></span> CAPÍTULO I <span class="chapter-divider">/</span> O VALE ESQUECIDO</div>
+      <button id="soundBtn" class="icon-button" aria-label="Alternar sons" title="Alternar sons">♫</button>
+    </header>
+
+    <section class="game-layout" aria-label="Jogo Crônicas de Eldoria">
+      <aside class="left-rail">
+        <div class="hero-card panel">
+          <div class="panel-kicker">A AVENTUREIRA</div>
+          <div class="hero-profile">
+            <div class="portrait"><span>✦</span><i></i></div>
+            <div><h2>Liora</h2><p>Guardião Errante</p></div>
+          </div>
+          <div class="level-line"><span>NÍVEL <b id="level">01</b></span><span id="xpText">0 / 100 XP</span></div>
+          <div class="xp-track"><i id="xpBar"></i></div>
+          <div class="stat-row"><span>♥ VITALIDADE</span><b id="hpText">100 / 100</b></div>
+          <div class="meter hp-meter"><i id="hpBar"></i></div>
+          <div class="stat-row mana-stat"><span>✧ ENERGIA</span><b id="mpText">40 / 40</b></div>
+          <div class="meter mp-meter"><i id="mpBar"></i></div>
+        </div>
+        <div class="quest-card panel">
+          <div class="panel-heading"><span class="heading-icon">⌖</span><div><div class="panel-kicker">MISSÃO ATUAL</div><h3 id="questTitle">Um vale em perigo</h3></div></div>
+          <p id="questDesc">Fale com a anciã Amara, perto da fogueira.</p>
+          <div class="quest-progress"><span id="questProgress">0 / 1</span><span id="questStatus">NOVA</span></div>
+          <div class="quest-track"><i id="questBar"></i></div>
+        </div>
+        <div class="inventory-card panel">
+          <div class="panel-kicker">MOCHILA</div>
+          <div class="inventory-grid">
+            <button class="item-slot" id="potionBtn" title="Usar poção (tecla Q)"><span class="item-icon potion-icon">⚗</span><span class="item-name">Poção</span><b id="potionCount">2</b></button>
+            <div class="item-slot"><span class="item-icon herb-icon">✿</span><span class="item-name">Ervas</span><b id="herbCount">0</b></div>
+            <div class="item-slot"><span class="item-icon coin-icon">◉</span><span class="item-name">Ouro</span><b id="goldCount">12</b></div>
+            <div class="item-slot empty-slot"><span>＋</span></div>
+          </div>
+        </div>
+        <div class="controls-card panel">
+          <div class="panel-kicker">CONTROLES</div>
+          <div class="key-row"><span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span><small>Mover</small></div>
+          <div class="key-row"><span class="key key-wide">ESPAÇO</span><small>Atacar</small></div>
+          <div class="key-row"><span class="key">E</span><small>Interagir</small><span class="key key-q">Q</span><small>Poção</small></div>
+        </div>
+      </aside>
+
+      <section class="world-column">
+        <div class="world-frame">
+          <div class="world-topline"><div><span class="live-dot"></span><span id="zoneName">FLORESTA DE LÚMEN</span></div><div class="world-coords" id="dayLabel">DIA 01 <i>•</i> MANHÃ</div></div>
+          <div class="canvas-wrap">
+            <canvas id="game" width="960" height="600" aria-label="Mundo do jogo. Use WASD para se mover, espaço para atacar, E para interagir."></canvas>
+            <div class="map-label"><span>⌖</span> VALE DE LÚMEN</div>
+            <div class="toast" id="toast" aria-live="polite"></div>
+            <div class="dialogue hidden" id="dialogue"><div class="dialogue-avatar" id="dialogueAvatar">A</div><div class="dialogue-content"><div class="dialogue-title" id="dialogueName">Amara</div><p id="dialogueText"></p><button id="dialogueNext">CONTINUAR <span>↗</span></button></div><button id="dialogueClose" aria-label="Fechar diálogo">×</button></div>
+            <div class="start-screen" id="startScreen"><div class="start-ornament">✦</div><div class="start-eyebrow">UMA JORNADA COMEÇA</div><h1>Crônicas<br><em>de Eldoria</em></h1><p>Uma chama antiga desperta sob o vale.<br>Seu destino começa agora.</p><button id="startBtn" class="start-button">INICIAR JORNADA <span>→</span></button><div class="start-hint">WASD PARA MOVER <i>·</i> ESPAÇO PARA LUTAR</div></div>
+            <div class="game-over hidden" id="gameOver"><div class="start-ornament">✦</div><div class="start-eyebrow">A JORNADA NÃO TERMINA AQUI</div><h2 id="endTitle">A chama se apaga</h2><p id="endText"></p><button id="restartBtn" class="start-button">JOGAR NOVAMENTE <span>↻</span></button></div>
+            <div class="mobile-controls" aria-label="Controles de toque"><div class="dpad"><button data-dir="up">▲</button><div><button data-dir="left">◀</button><button data-dir="down">▼</button><button data-dir="right">▶</button></div></div><div class="touch-actions"><button id="touchInteract">E</button><button id="touchAttack">⚔</button></div></div>
+          </div>
+          <div class="world-footer"><span><i class="footer-star">✦</i> <span id="worldHint">Encontre a anciã Amara perto da fogueira.</span></span><span class="world-footer-right"><span class="online-dot"></span> SALVO LOCALMENTE</span></div>
+        </div>
+        <div class="bottom-row">
+          <div class="tip-card panel"><span class="tip-icon">☼</span><div><div class="panel-kicker">DICA DO VIAJANTE</div><p id="tipText">As ervas brilhantes escondidas pelo vale podem ser trocadas por poções.</p></div><button id="tipNext" aria-label="Próxima dica">↗</button></div>
+          <div class="map-card panel"><div class="mini-map" id="miniMap"><span class="map-player"></span><span class="map-north">N</span></div><div class="map-info"><div class="panel-kicker">MAPA DO VALE</div><strong>Terras de Lúmen</strong><small><span class="map-key-dot"></span> Sua posição</small></div></div>
+        </div>
+      </section>
+      <aside class="right-rail">
+        <div class="world-status panel"><div class="panel-kicker">ESTADO DO MUNDO</div><div class="weather"><span class="weather-icon">☀</span><div><strong>Brisa suave</strong><small>18° · Céu limpo</small></div></div><div class="status-separator"></div><div class="world-clock"><span>◷</span><div><small>HORÁRIO LOCAL</small><strong id="clock">08:42</strong></div><span class="clock-period">AM</span></div></div>
+        <div class="journal-card panel"><div class="panel-heading"><span class="heading-icon">▤</span><div><div class="panel-kicker">DIÁRIO DE VIAGEM</div><h3>Descobertas</h3></div></div><div class="journal-list" id="journalList"><div class="journal-entry active"><i>✦</i><span>Você chegou ao Vale de Lúmen</span><small>AGORA</small></div></div></div>
+        <div class="bestiary-card panel"><div class="panel-heading"><span class="heading-icon">♧</span><div><div class="panel-kicker">BESTIÁRIO</div><h3>Habitantes do vale</h3></div></div><div class="beast-row"><span class="beast-sprite slime-sprite">●</span><div><b>Gosma verde</b><small>Inofensiva? Nem tanto.</small></div><span class="beast-count" id="slimeCount">0</span></div><div class="beast-row"><span class="beast-sprite wolf-sprite">◆</span><div><b>Lobo-da-sombra</b><small>Espreita na floresta.</small></div><span class="beast-count" id="wolfCount">0</span></div></div>
+        <div class="achievement-card panel"><div class="achievement-icon">♜</div><div><div class="panel-kicker">PRÓXIMA CONQUISTA</div><strong id="achievementTitle">Primeiro sangue</strong><small id="achievementDesc">Derrote seu primeiro inimigo</small></div><span class="lock-icon">◈</span></div>
+        <div class="save-note"><span>◉</span> Seu progresso é salvo<br> automaticamente nesta sessão.</div>
+      </aside>
+    </section>
+    <footer class="site-footer"><span>© 2025 ELDORIA STUDIOS</span><span>FEITO DE LENDA <i>✦</i> UM DIA DE CADA VEZ</span><span>VERSÃO 1.0.4</span></footer>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
